@@ -1,0 +1,9 @@
+ElasticFiberInsult 		0.2  0; 		5.0 2 7.5;		5.0 9 1.0 0
+GeneralProductionRemovalInsult  0.00 0;			5.0 2 7.5;       
+FlowInsult 			0.00 0;			5.0 2 7.5;
+InflammationAmplitudeInsult 	0.00 0;         	5.0 2;           
+InflammationRatioInsult 	0.0  0;			5.0 2 7.5;
+GeneralProductionRemovalInsult  0.00 1;			5.0 2 7.5;       
+FlowInsult 			0.00 1;			5.0 2 7.5;
+InflammationAmplitudeInsult 	0.00 1;         	5.0 2;           
+InflammationRatioInsult 	0.0  1;			5.0 2 7.5;
