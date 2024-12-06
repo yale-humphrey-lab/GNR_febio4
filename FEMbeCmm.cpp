@@ -482,35 +482,47 @@ void FEMbeCmm::StressTangent(FEMaterialPoint& mp, mat3ds& stress, tens4dmm& tang
 		}
 		*pt.last_config = *pt.current_config;
 		pt.last_config->setCurrentLayer(pt.m_prv_layers.at(layer_index));
+
+
+		if (layer_index == 0)
+		{
+			et.m_a.x = pt.current_config->getCurrentLayer()->getNoTurnOverConstituents().at(0)->getFraction();
+			et.m_a.y = pt.current_config->getCurrentLayer()->getTurnOverConstituents().at(0)->getFraction();
+			et.m_a.z = pt.current_config->getCurrentLayer()->getTurnOverConstituents().at(1)->getFraction();
+			double ggs = 1 - (et.m_a.x + et.m_a.y + et.m_a.z);
+			feLog("FMF_media elastin %.4f\t collagen %.4f\t sm % .4f\t GaGs %.4f\n", et.m_a.x, et.m_a.y, et.m_a.z, ggs);
+		}
+		else
+		{
+			et.m_v.x = pt.current_config->getCurrentLayer()->getNoTurnOverConstituents().at(0)->getFraction();
+			et.m_v.y = pt.current_config->getCurrentLayer()->getTurnOverConstituents().at(0)->getFraction();
+			et.m_v.z = pt.current_config->getCurrentLayer()->getTurnOverConstituents().at(1)->getFraction();
+			double ggs = 1 - (et.m_v.x + et.m_v.y + et.m_v.z);
+			feLog("FMF_adv elastin %.4f\t collagen %.4f\t sm % .4f\t GaGs %.4f\n", et.m_v.x, et.m_v.y, et.m_v.z, ggs);
+		}
+
 		return;
 	}
+
 	//Post hom - G&R is inactive - usually unnecessary
 	else {
-		double c_z = pt.current_config->getRefConf()->getCurrentLayer()->getZ();
-		double rrr = pt.current_config->getRefConf()->getCurrentLayer()->getRRatio();
-		if ((c_z > 7.49999999999) && (c_z > 7.50000001))
+
+		if (layer_index == 0)
 		{
-			if (pt.current_config->getRefConf()->getCurrentLayer()->getNoTurnOverConstituents().at(0)->getFraction() > 0.4)
-			{
-				et.m_a.x = pt.current_config->getCurrentLayer()->getNoTurnOverConstituents().at(0)->getFraction();
-				et.m_a.y = pt.current_config->getCurrentLayer()->getTurnOverConstituents().at(0)->getFraction();
-				et.m_a.z = pt.current_config->getCurrentLayer()->getTurnOverConstituents().at(1)->getFraction();
-				double ggs = 1 - (et.m_a.x + et.m_a.y + et.m_a.z);
-				feLog("FMF_media elastin %.4f\t collagen %.4f\t sm % .4f\t GaGs %.4f\n", et.m_a.x, et.m_a.y, et.m_a.z, ggs);
-				feLog("RRM %.4f\n", rrr);
-			}
-			else
-			{
-				et.m_v.x = pt.current_config->getCurrentLayer()->getNoTurnOverConstituents().at(0)->getFraction();
-				et.m_v.y = pt.current_config->getCurrentLayer()->getTurnOverConstituents().at(0)->getFraction();
-				et.m_v.z = pt.current_config->getCurrentLayer()->getTurnOverConstituents().at(1)->getFraction();
-				double ggs = 1 - (et.m_v.x + et.m_v.y + et.m_v.z);
-				feLog("FMF_adv elastin %.4f\t collagen %.4f\t sm % .4f\t GaGs %.4f\n", et.m_v.x, et.m_v.y, et.m_v.z, ggs);
-				feLog("RRA %.4f\n", rrr);
-			}
+			et.m_a.x = pt.current_config->getCurrentLayer()->getNoTurnOverConstituents().at(0)->getFraction();
+			et.m_a.y = pt.current_config->getCurrentLayer()->getTurnOverConstituents().at(0)->getFraction();
+			et.m_a.z = pt.current_config->getCurrentLayer()->getTurnOverConstituents().at(1)->getFraction();
+			double ggs = 1 - (et.m_a.x + et.m_a.y + et.m_a.z);
+			feLog("FMF_media elastin %.4f\t collagen %.4f\t sm % .4f\t GaGs %.4f\n", et.m_a.x, et.m_a.y, et.m_a.z, ggs);
 		}
-		//et.m_v.x = pt.current_config->getCurrentLayer()->getTurnOverConstituents().at(2)->getFraction();
-		//feLog("FMF_a elastin %.4f\t collagen %.4f\t sm % .4f\t GaGs %.4f\n", et.m_a.x, et.m_a.y, et.m_a.z, et.m_v.x);
+		else
+		{
+			et.m_v.x = pt.current_config->getCurrentLayer()->getNoTurnOverConstituents().at(0)->getFraction();
+			et.m_v.y = pt.current_config->getCurrentLayer()->getTurnOverConstituents().at(0)->getFraction();
+			et.m_v.z = pt.current_config->getCurrentLayer()->getTurnOverConstituents().at(1)->getFraction();
+			double ggs = 1 - (et.m_v.x + et.m_v.y + et.m_v.z);
+			feLog("FMF_adv elastin %.4f\t collagen %.4f\t sm % .4f\t GaGs %.4f\n", et.m_v.x, et.m_v.y, et.m_v.z, ggs);
+		}
 
 
 		{

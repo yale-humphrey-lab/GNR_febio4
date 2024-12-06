@@ -70,8 +70,8 @@ void Insult::setInsultPeriod(double start, double end)
 			 Constituent* c = pUpdate->getNoTurnOverConstituents()[index];
 			 if (Elastin * Ptr = dynamic_cast<Elastin*>(c)) 
 			 {
-				// Ptr->setModulus(orig * (1 - m_insult * insult_factor));
-				 Ptr->setModulus(orig * (1 - m_insult * insult_factor));
+				Ptr->setModulus(orig * (1 - m_insult * insult_factor));
+				//Ptr->setModulus(orig * (1 - m_insult * m_axialFactor));
 			 }
 		 }
 		 break;

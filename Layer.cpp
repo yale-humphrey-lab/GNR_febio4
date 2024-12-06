@@ -154,7 +154,7 @@ void Layer::setPosition(vec3d& p)
 	material_point = p;
 
 	double R = (2 * lo) / M_PI;
-	//double R = 5;
+
 
 	double phi = atan2(p.y, p.z);
 	double theta = atan2(p.x, (sqrt(pow(p.y, 2.) + pow(p.z, 2.)) - R));
@@ -166,19 +166,19 @@ void Layer::setPosition(vec3d& p)
 		const vec3d E_theta = { cos(theta), -sin(theta) * sin(phi), -sin(theta) * cos(phi)};
 		const vec3d E_phi = { 0, -cos(phi), sin(phi)};
 
-		double _E_r = sqrt(E_r * E_r);
-		const vec3d norm_E_r = E_r / _E_r;
-		double _E_theta = sqrt(E_theta * E_theta);
-		const vec3d norm_E_theta = E_theta / _E_theta;
-		double _E_phi = sqrt(E_phi * E_phi);
-		const vec3d norm_E_phi = E_phi / _E_phi;
-		setBaseVec(norm_E_r, norm_E_theta, norm_E_phi);
-		
-		//single_with and without gags
-		double fradial_base = -fabs((phi - M_PI / 4.0) / (M_PI / 18)) * 2 * 2.5;
-		double fcircum_base = -fabs((atan2(p.x, theta)) / (M_PI / 2.0)) * 0.01;
-		m_azi = 0.5 * exp(pow(fradial_base, 5)) * exp(pow(fcircum_base, 5));
+		setBaseVec(E_r, E_theta, E_phi);
 
+		//double coef = 5;
+		double coef = 5;
+		double loc = 0.5; //0.2-0.5
+		//double width = 4.5; 4- 5.5 if injury 0.2 and not 0.3 then 2.0-7.5
+		double width = 7.5;
+
+		double tu = 1/width * M_PI/4;
+
+		m_azi = exp(pow(-fabs((phi - loc * M_PI/2) / tu), coef));
+		//std::string strStressr742 = "D:/m_azi" + std::to_string(m_azi);
+		//std::ofstream rfil4114(strStressr742);
 	}
 	else 
 	{
